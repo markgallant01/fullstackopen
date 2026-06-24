@@ -5,7 +5,7 @@ const Button = ({ onClick, text }) => {
 }
 
 const StatisticLine = ({ text, value }) => {
-  return <p>{text} {value}</p>
+  return <tr><td>{text}</td><td>{value}</td></tr>
 }
 
 const Statistics = ({ values, getAverage, getPositivePercentage }) => {
@@ -15,12 +15,16 @@ const Statistics = ({ values, getAverage, getPositivePercentage }) => {
     return (
       <div>
         <h2>statistics</h2>
-        <StatisticLine text="good" value={values.good} />
-        <StatisticLine text="neutral" value={values.neutral} />
-        <StatisticLine text="bad" value={values.bad} />
-        <StatisticLine text="all" value={values.all} />
-        <StatisticLine text="average" value={getAverage()} />
-        <StatisticLine text="positive" value={getPositivePercentage()} />
+        <table>
+          <tbody>
+            <StatisticLine text="good" value={values.good} />
+            <StatisticLine text="neutral" value={values.neutral} />
+            <StatisticLine text="bad" value={values.bad} />
+            <StatisticLine text="all" value={values.total} />
+            <StatisticLine text="average" value={getAverage()} />
+            <StatisticLine text="positive" value={getPositivePercentage()} />
+          </tbody>
+        </table>
       </div>
     )
   }
@@ -83,7 +87,7 @@ const App = () => {
       <Button onClick={handleNeutralClick} text="neutral" />
       <Button onClick={handleBadClick} text="bad" />
       <Statistics values={values} getAverage={getAverage}
-        getPositivePercentage={getPositivePercentage}/>
+        getPositivePercentage={getPositivePercentage} />
     </div>
   )
 }
