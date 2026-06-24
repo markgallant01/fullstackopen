@@ -17,11 +17,25 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState({})
+
+  const castVote = () => {
+    let currentVotes = {...votes}
+    if (currentVotes[selected]) {
+      currentVotes[selected] += 1
+    } else {
+      currentVotes[selected] = 1
+    }
+
+    setVotes(currentVotes)
+  }
 
   return (
     <div>
       {anecdotes[selected]}
+      <p>has {votes[selected]} votes</p>
       <br />
+      <button onClick={castVote}>vote</button>
       <button onClick={() => setSelected(getRandomInt(anecdotes.length))}>
         next anecdote
       </button>
