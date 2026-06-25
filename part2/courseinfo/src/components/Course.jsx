@@ -1,16 +1,16 @@
 const Header = ({ title }) => {
   return (
-    <>
+    <div>
       <h1>{title}</h1>
-    </>
+    </div>
   )
 }
 
 const Part = ({ part }) => {
   return (
-    <>
+    <div>
       <p>{part.name} {part.exercises}</p>
-    </>
+    </div>
   )
 }
 
@@ -27,8 +27,9 @@ const Content = ({ parts }) => {
 }
 
 const Total = ({ parts }) => {
-  const total_exercises = parts[0].exercises +
-    parts[1].exercises + parts[2].exercises
+  const total_exercises = parts.reduce((sum, part) => {
+    return sum + part.exercises
+  }, 0)
 
   return (
     <p>Number of exercises {total_exercises}</p>

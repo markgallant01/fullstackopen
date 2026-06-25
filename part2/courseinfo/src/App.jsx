@@ -20,8 +20,8 @@ const App = () => {
         id: 3
       },
       {
-        name: 'Bonus component',
-        exercises: 5,
+        name: 'Redux',
+        exercises: 11,
         id: 4
       }
     ]
