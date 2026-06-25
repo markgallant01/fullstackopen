@@ -17,21 +17,28 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
-  const [votes, setVotes] = useState({})
+  const [votes, setVotes] = useState([0,0,0,0,0,0,0,0])
+  const [highestVoted, setHighestVoted] = useState(0)
 
   const castVote = () => {
-    let currentVotes = {...votes}
-    if (currentVotes[selected]) {
-      currentVotes[selected] += 1
-    } else {
-      currentVotes[selected] = 1
-    }
-
+    let currentVotes = [...votes]
+    currentVotes[selected] += 1
     setVotes(currentVotes)
+  }
+
+  const getHighestVoteIndex = () => {
+    let highestVoteIndex = 0
+    for (const i in votes) {
+      if (votes[i] > votes[highestVoteIndex]) {
+        highestVoteIndex = i
+      }
+    }
+    return highestVoteIndex
   }
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
       <p>has {votes[selected]} votes</p>
       <br />
@@ -39,6 +46,8 @@ const App = () => {
       <button onClick={() => setSelected(getRandomInt(anecdotes.length))}>
         next anecdote
       </button>
+      <h1>Anecdote with the most votes</h1>
+      {anecdotes[getHighestVoteIndex()]}
     </div>
   )
 }
