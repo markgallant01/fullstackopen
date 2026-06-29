@@ -51,8 +51,9 @@ const App = () => {
               type: 'error',
               text: `${nameObj.name} has already been deleted`
             })
+            personService.getAll().then(response => setPersons(response))
             setTimeout(() => {
-              setError(null)
+              setNotification(null)
             }, 5000)
           })
       }
