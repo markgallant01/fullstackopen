@@ -26,11 +26,28 @@ const PersonForm = (props) => {
   )
 }
 
-const Persons = ({ persons, filterString }) => {
+const Person = ({ person, deleteFunc }) => {
   return (
     <div>
-      {persons.filter(person => person.name.includes(filterString))
-      .map(person => <p key={person.name}>{person.name} {person.number}</p>)}
+      <p>
+        {person.name} {person.number}
+        <button onClick={deleteFunc}>delete</button>
+      </p>
+    </div>
+  )
+}
+
+const Persons = ({ persons, filterString, deleteFunc }) => {
+  return (
+    <div>
+      {persons
+        .filter(person => person.name.includes(filterString))
+        .map(person => {
+          return <Person key={person.name} person={person}
+            deleteFunc={() => deleteFunc(person)} 
+          />
+        })
+      }
     </div>
   )
 }
@@ -74,6 +91,13 @@ const App = () => {
     setFilterString(event.target.value)
   }
 
+  const deletePerson = (person) => {
+    if (confirm(`Delete ${person.name}?`)) {
+      personService.deletePerson(person)
+      personService.getAll().then(response => setPersons(response))
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -83,7 +107,8 @@ const App = () => {
         newNumber={newNumber} handleNewNumber={handleNewNumber}
         handleFormSubmit={handleFormSubmit} />
       <h2>Numbers</h2>
-      <Persons persons={persons} filterString={filterString} />
+      <Persons persons={persons} filterString={filterString}
+        deleteFunc={deletePerson} />
     </div>
   )
 }
