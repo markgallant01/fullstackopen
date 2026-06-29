@@ -38,9 +38,21 @@ const App = () => {
             personService.getAll().then(response => setPersons(response))
             setNewName('')
             setNewNumber('')
-            setNotification(`Updated ${nameObj.name}`)
+            setNotification({
+              type: 'success',
+              text: `Updated ${nameObj.name}`
+            })
             setTimeout(() => {
               setNotification(null)
+            }, 5000)
+          })
+          .catch(() => {
+            setNotification({
+              type: 'error',
+              text: `${nameObj.name} has already been deleted`
+            })
+            setTimeout(() => {
+              setError(null)
             }, 5000)
           })
       }

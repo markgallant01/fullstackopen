@@ -1,5 +1,5 @@
 const Notification = ({ message }) => {
-  const notificationStyle = {
+  const successStyle = {
     color: "green",
     background: "lightgrey",
     border: "3px solid green",
@@ -8,12 +8,21 @@ const Notification = ({ message }) => {
     marginBottom: "15px"
   }
 
+  const errorStyle = {
+    ...successStyle,
+    color: "red",
+    border: "3px solid red"
+  }
+
   if (message === null) {
     return null
   }
 
+  const notificationStyle =
+    message.style === "success" ? successStyle : errorStyle
+
   return (
-    <div style={notificationStyle}>{message}</div>
+    <div style={notificationStyle}>{message.text}</div>
   )
 }
 
