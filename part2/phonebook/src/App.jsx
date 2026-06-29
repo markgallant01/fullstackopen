@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const Filter = ({ filter, filterNames }) => {
+const Filter = ({ filterString, filterNames }) => {
   return (
     <div>
-      filter shown with <input value={filter} onChange={filterNames}/>
+      filter shown with <input value={filterString} onChange={filterNames}/>
     </div>
   )
 }
@@ -26,10 +26,10 @@ const PersonForm = (props) => {
   )
 }
 
-const Persons = ({ persons, filter }) => {
+const Persons = ({ persons, filterString }) => {
   return (
     <div>
-      {persons.filter(person => person.name.includes(filter))
+      {persons.filter(person => person.name.includes(filterString))
       .map(person => <p key={person.name}>{person.name} {person.number}</p>)}
     </div>
   )
@@ -39,7 +39,7 @@ const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-  const [filter, setFilter] = useState('')
+  const [filterString, setFilterString] = useState('')
 
   useEffect(() => {
     axios
@@ -67,24 +67,29 @@ const App = () => {
     }
 
     const nameObj = { name: newName, number: newNumber }
-    setPersons(persons.concat(nameObj))
-    setNewName('')
+
+    axios
+      .post('http://localhost:3001/persons', nameObj)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+        setNewName('')
+    })
   }
 
   const filterNames = (event) => {
-    setFilter(event.target.value)
+    setFilterString(event.target.value)
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter filter={filter} filterNames={filterNames} />
+      <Filter filterString={filterString} filterNames={filterNames} />
       <h2>add a new</h2>
       <PersonForm newName={newName} handleNewName={handleNewName}
         newNumber={newNumber} handleNewNumber={handleNewNumber}
         handleFormSubmit={handleFormSubmit} />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter} />
+      <Persons persons={persons} filterString={filterString} />
     </div>
   )
 }

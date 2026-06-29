@@ -1,24 +1,50 @@
 {
-  "persons":[
-    { 
-      "name": "Arto Hellas", 
+  "persons": [
+    {
+      "name": "Arto Hellas",
       "number": "040-123456",
       "id": "1"
     },
-    { 
-      "name": "Ada Lovelace", 
+    {
+      "name": "Ada Lovelace",
       "number": "39-44-5323523",
       "id": "2"
     },
-    { 
-      "name": "Dan Abramov", 
+    {
+      "name": "Dan Abramov",
       "number": "12-43-234345",
       "id": "3"
     },
-    { 
-      "name": "Mary Poppendieck", 
+    {
+      "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": "4"
+    },
+    {
+      "name": "Johnny Bravo",
+      "number": "999-9999",
+      "id": "4lDAGmenklk"
+    },
+    {
+      "name": "George Washington",
+      "number": "250-1776",
+      "id": "-miIIGEdKiQ"
+    },
+    {
+      "name": "Harry Potter",
+      "number": "1-111-111-1111",
+      "id": "KtgQI-HuD6M"
+    },
+    {
+      "name": "Julius Caesar",
+      "number": "129-1939",
+      "id": "x5ApaGxMKSk"
+    },
+    {
+      "name": "Susan Storm",
+      "number": "184-284-1883",
+      "id": "eVnflgrkeFg"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
