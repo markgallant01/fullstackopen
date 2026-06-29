@@ -72,14 +72,18 @@ const App = () => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault()
+    const nameObj = { name: newName, number: newNumber }
+
     // check for duplicate name
-    const currentNames = persons.map(person => person.name)
-    if (currentNames.includes(newName)) {
-      alert(`${newName} is already added to phonebook`)
+    let duplicate = persons.filter(person => person.name === newName)
+    if (duplicate.length > 0) {
+      if(confirm(`${newName} is already added to phonebook, replace the
+        old number with a new one?`)) {
+        personService.updateNumber(duplicate[0], newNumber)
+        personService.getAll().then(response => setPersons(response))
+      }
       return
     }
-
-    const nameObj = { name: newName, number: newNumber }
 
     personService.create(nameObj).then(returnedPerson => {
       setPersons(persons.concat(returnedPerson))
