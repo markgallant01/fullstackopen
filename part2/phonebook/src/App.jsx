@@ -1,62 +1,16 @@
 import { useState, useEffect } from 'react'
 import personService from './services/persons'
-
-const Filter = ({ filterString, filterNames }) => {
-  return (
-    <div>
-      filter shown with <input value={filterString} onChange={filterNames}/>
-    </div>
-  )
-}
-
-const PersonForm = (props) => {
-  return (
-    <form onSubmit={props.handleFormSubmit}>
-      <div>
-        name: <input value={props.newName} onChange={props.handleNewName}/>
-      </div>
-      <div>
-        number:
-        <input value={props.newNumber} onChange={props.handleNewNumber}/>
-      </div>
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
-  )
-}
-
-const Person = ({ person, deleteFunc }) => {
-  return (
-    <div>
-      <p>
-        {person.name} {person.number}
-        <button onClick={deleteFunc}>delete</button>
-      </p>
-    </div>
-  )
-}
-
-const Persons = ({ persons, filterString, deleteFunc }) => {
-  return (
-    <div>
-      {persons
-        .filter(person => person.name.includes(filterString))
-        .map(person => {
-          return <Person key={person.name} person={person}
-            deleteFunc={() => deleteFunc(person)} 
-          />
-        })
-      }
-    </div>
-  )
-}
+import Filter from './components/Filter.jsx'
+import PersonForm from './components/PersonForm.jsx'
+import Persons from './components/Persons.jsx'
+import Notification from './components/Notification.jsx'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterString, setFilterString] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     personService.getAll().then(response => setPersons(response))
@@ -80,7 +34,15 @@ const App = () => {
       if(confirm(`${newName} is already added to phonebook, replace the
         old number with a new one?`)) {
         personService.updateNumber(duplicate[0], newNumber)
-        personService.getAll().then(response => setPersons(response))
+          .then(() => {
+            personService.getAll().then(response => setPersons(response))
+            setNewName('')
+            setNewNumber('')
+            setNotification(`Updated ${nameObj.name}`)
+            setTimeout(() => {
+              setNotification(null)
+            }, 5000)
+          })
       }
       return
     }
@@ -88,6 +50,11 @@ const App = () => {
     personService.create(nameObj).then(returnedPerson => {
       setPersons(persons.concat(returnedPerson))
       setNewName('')
+      setNewNumber('')
+      setNotification(`Added ${nameObj.name}`)
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
     })
   }
 
@@ -105,6 +72,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} />
       <Filter filterString={filterString} filterNames={filterNames} />
       <h2>add a new</h2>
       <PersonForm newName={newName} handleNewName={handleNewName}
