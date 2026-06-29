@@ -24,11 +24,6 @@
       "content": "a new note...",
       "important": true,
       "id": "OExUyftvMpU"
-    },
-    {
-      "content": "This is also a new note",
-      "important": true,
-      "id": "C_4DGjK1c8o"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
