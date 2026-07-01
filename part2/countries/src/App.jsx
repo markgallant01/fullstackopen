@@ -13,6 +13,17 @@ const Search = ({ handleSearch }) => {
 
 const CountryDisplay = ({ startVisible, country }) => {
   const [visible, setVisible] = useState(startVisible)
+  const [weatherData, setWeatherData] = useState([])
+
+  useEffect(() => {
+    const [lat, long] = country.latlng
+    const baseUrl = "https://api.open-meteo.com/v1/forecast"//&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m
+    axios.get(`${baseUrl}?latitude=${lat}&longitude=${long}`)
+      .then(response => {
+        setWeatherData(response.data)
+        console.log(response.data)
+      })
+  }, [])
 
   if (!visible) {
     return (
@@ -34,6 +45,7 @@ const CountryDisplay = ({ startVisible, country }) => {
       })}
       </ul>
       <img src={country.flags["png"]} />
+      <h2>Weather in {country.capital[0]}</h2>
     </div>
   )
 }
@@ -50,7 +62,7 @@ const Results = ({ searchResults }) => {
   }
 
   if (searchResults.length === 1) {
-    return <CountryDisplay makeVisible={true} country={searchResults[0]} />
+    return <CountryDisplay startVisible={true} country={searchResults[0]} />
   }
 
   return (
