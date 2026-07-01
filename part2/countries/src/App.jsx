@@ -11,7 +11,17 @@ const Search = ({ handleSearch }) => {
   )
 }
 
-const CountryDisplay = ({ country }) => {
+const CountryDisplay = ({ startVisible, country }) => {
+  const [visible, setVisible] = useState(startVisible)
+
+  if (!visible) {
+    return (
+      <p>{country.name.common} <button onClick={() => setVisible(true)}>
+        show
+      </button></p>
+    )
+  }
+
   return (
     <div>
       <h1>{country.name.common}</h1>
@@ -40,13 +50,15 @@ const Results = ({ searchResults }) => {
   }
 
   if (searchResults.length === 1) {
-    return <CountryDisplay country={searchResults[0]} />
+    return <CountryDisplay makeVisible={true} country={searchResults[0]} />
   }
 
   return (
     <div>
       {searchResults.map(country => {
-        return <p key={country.name.common}>{country.name.common}</p>
+        return (<CountryDisplay key={country.name.common}
+          startVisible={false} country={country} />
+        )
       })}
     </div>
   )
